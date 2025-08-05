@@ -1,0 +1,7 @@
+python-dotenv
+web3==6.15.1
+eth-account
+aiohttp
+aiohttp-socks
+colorama
+fake-useragent
