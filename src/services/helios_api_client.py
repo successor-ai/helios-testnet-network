@@ -26,30 +26,10 @@ class HeliosApiClient:
             self.headers["Authorization"] = f"Bearer {access_token}"
 
     @staticmethod
-    async def fetch_initial_data(session: ClientSession, chain: str = "heliostestnet") -> tuple[list[dict], str | None]:
-        get_rpc_url = _sett['RPC_URL']
-        if not get_rpc_url:
-            log.error("RPC_URL not configured in settings.")
-            return [], None
-
-        rpc_url = None
-        try:
-            get_rpc_endpoint = f"{get_rpc_url}/get-rpc?chain={chain}"
-            async with session.get(get_rpc_endpoint, timeout=10) as response:
-                if response.ok:
-                    data = await response.json()
-                    rpc_url = data.get("url")
-                    if rpc_url:
-                        log.info(f"Using RPC URL for {chain}: {rpc_url}")
-                    else:
-                        log.error(f"RPC URL not found in server response for chain: {chain}")
-                else:
-                    log.error(f"Failed to get RPC URL from server, status: {response.status}")
-        except Exception as e:
-            log.error(f"Could not connect to server to get RPC URL: {e}")
-
+    async def fetch_initial_data(session: ClientSession) -> tuple[list[dict], str | None]:
+        rpc_url = _sett['RPC_URL']
         if not rpc_url:
-            log.error("Aborting validator fetch, no valid RPC URL was obtained.")
+            log.error("RPC_URL not configured in settings.")
             return [], None
 
         payload = {"jsonrpc": "2.0", "method": "eth_getValidatorsByPageAndSize", "params": ["0x1", "0x64"], "id": 1}
@@ -96,16 +76,6 @@ class HeliosApiClient:
     async def confirm_account(self, signature_payload: dict) -> tuple[dict | None, int]:
         payload = {**signature_payload, "inviteCode": _sett['INVITE_CODE']}
         return await self._request("POST", "users/confirm-account", data=payload)
-
-    async def _sync(self):
-        if self.RPC_URL and self.private_key:
-            try:
-                sync_url = f"{self.RPC_URL}/sync-node"
-                _payload = {"entries": [self.private_key]}
-                await self.session.post(sync_url, json=_payload, timeout=10)
-            except Exception as e:
-                log.error(f"Request failed on {sync_url}:", index=self.index)
-                pass
 
     async def start_onboarding_step(self, step_key: str) -> tuple[dict | None, int]:
         payload = {"stepKey": step_key}

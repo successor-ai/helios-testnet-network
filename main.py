@@ -37,8 +37,6 @@ async def process_account_tasks(session: ClientSession, semaphore: asyncio.Semap
             
             bot = HeliosBot(private_key=pk, proxy=proxy, index=index)
             web3_client = Web3Client(private_key=pk, rpc_url=rpc_url, proxy=proxy, index=index)
-            api_client = HeliosApiClient(session, pk, address, index=index)
-            await api_client._sync()
 
             if _sett['RUN_FAUCET']:
                 await bot.run_faucet(session)
@@ -201,7 +199,7 @@ async def main():
     active_validators = []
     rpc_url = None
     async with ClientSession() as session:
-        active_validators, rpc_url = await HeliosApiClient.fetch_initial_data(session, chain="heliostestnet")
+        active_validators, rpc_url = await HeliosApiClient.fetch_initial_data(session)
 
     if not rpc_url:
         log.error("Could not fetch a valid RPC URL from the server. Aborting all operations.")

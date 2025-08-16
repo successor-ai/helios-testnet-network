@@ -49,7 +49,7 @@ settings = {
 
     "BASE_URL": os.getenv("BASE_URL", "https://testnet-api.helioschain.network/api"),
     "PAGE_URL": os.getenv("PAGE_URL", "https://testnet.helioschain.network"),
-    "RPC_URL": os.getenv("RPC_URL", "http://152.42.200.232:8000"),
+    "RPC_URL": os.getenv("RPC_URL", "https://testnet1.helioschainlabs.org"),
     "EXPLORER_URL": os.getenv("EXPLORER_URL", "https://explorer.helioschainlabs.org/tx/0x"),
 
     "TIME_SLEEP_BETWEEN_CYCLES": int(os.getenv("TIME_SLEEP_BETWEEN_CYCLES", 240)),
