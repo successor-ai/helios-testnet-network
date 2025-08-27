@@ -60,7 +60,7 @@ class Web3Client:
         })
         
         signed_tx = self.account.sign_transaction(tx)
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
 
         self.nonce += 1
         
@@ -107,7 +107,7 @@ class Web3Client:
         tx['gasPrice'] = self.w3.eth.gas_price
 
         signed_tx = self.account.sign_transaction(tx)
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
         
         self.nonce += 1
         
@@ -148,7 +148,7 @@ class Web3Client:
         tx['gasPrice'] = self.w3.eth.gas_price
 
         signed_tx = self.account.sign_transaction(tx)
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
 
         self.nonce += 1
         
@@ -173,7 +173,7 @@ class Web3Client:
         tx_data['gas'] = int(gas * 1.2)
         
         signed_tx = self.account.sign_transaction(tx_data)
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
         self.nonce += 1
         
         log.info(f"Deployment transaction sent:", index=self.index) 
@@ -205,7 +205,7 @@ class Web3Client:
         tx_data['gasPrice'] = self.w3.eth.gas_price
 
         signed_tx = self.account.sign_transaction(tx_data)
-        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.rawTransaction)
+        tx_hash = self.w3.eth.send_raw_transaction(signed_tx.raw_transaction)
         self.nonce += 1
         
         receipt = await self._wait_for_receipt(tx_hash.hex())
